@@ -30,14 +30,14 @@ class Directory extends Component {
                 },
                 {
                   title: 'womens',
-                  imageUrl: 'https://i.ibb.co/GCCdy8t/womens.png',
+                  imageUrl: 'https://i.ibb.co/L8VC1yP/pexels-ogo-2788815.jpg',
                   size: 'large',
                   id: 4,
                   linkUrl: 'shop/womens'
                 },
                 {
                   title: 'mens',
-                  imageUrl: 'https://i.ibb.co/R70vBrQ/men.png',
+                  imageUrl: 'https://i.ibb.co/bXr8Jyt/pexels-subhan-saad-3613388.jpg',
                   size: 'large',
                   id: 5,
                   linkUrl: 'shop/mens'
