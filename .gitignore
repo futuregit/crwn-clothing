@@ -23,8 +23,8 @@ yarn-debug.log*
 yarn-error.log*
 
 # config
-/firebase
-firebase.util.js
+# /firebase
+# firebase.util.js
 
 # environment
 .env
