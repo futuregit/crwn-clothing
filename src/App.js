@@ -20,9 +20,13 @@ class App extends Component {
 
   unsubscribeFromAuth = null;
 
+  // onAuthStateChanged is an obsever method for the global authentication object (auth) on firebase
+
   componentDidMount() {
+    // Pass in any empty (like userAuth) parameter and it get assigned an object inside the observer
     this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
       if (userAuth) {
+        // if user don't exist create a user
         const userRef = await createUserProfileDocument(userAuth);
 
         userRef.onSnapshot(snapShot => {
@@ -31,11 +35,13 @@ class App extends Component {
               id: snapShot.id,
               ...snapShot.data()
             }
-          }, () => {
-            console.log(this.state)
-          })
+          });
+
+          console.log(this.state);
         });
-      } 
+      }
+
+      this.setState({ currentUser: userAuth });
     });
   }
 

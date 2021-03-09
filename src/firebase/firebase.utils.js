@@ -1,7 +1,12 @@
 import firebase from 'firebase/app';
+// Firebase cloud product 
 import 'firebase/firestore';
+//Firebase authentication product
 import 'firebase/auth';
 
+// Firebase project configuration
+// REACT_APP_API is an key value environmental value being read from .env at the root.
+// These Firebase configuration values are okay to be public
 const config = {
     apiKey: process.env.REACT_APP_API_KEY,
     authDomain: process.env.REACT_APP_AUTHDOMAIN,
@@ -13,12 +18,14 @@ const config = {
   };
 
  
-
+  // Initial Firebase
   firebase.initializeApp(config);
 
+  // const to create a user in Firebase
   export const createUserProfileDocument = async (userAuth, additionalData) => {
+    // If user is not authenticated, exit this function.
     if (!userAuth) return;
-  
+    // userRef holds reference to collection called, users, document id
     const userRef = firestore.doc(`users/${userAuth.uid}`);
   
     const snapShot = await userRef.get();
@@ -41,6 +48,7 @@ const config = {
     return userRef;
   };
 
+  // Making the auth and firestore module available to other files that import these.
   export const auth = firebase.auth();
   export const firestore = firebase.firestore();
 
