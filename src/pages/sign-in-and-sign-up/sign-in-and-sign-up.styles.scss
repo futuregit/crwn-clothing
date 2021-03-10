@@ -1,6 +1,13 @@
 $sub-color: grey;
 $main-color: black;
 
+.sign-in-and-sign-up {
+  width: 850px;
+  display: flex;
+  justify-content: space-between;
+  margin: 30px auto;
+}
+
 @mixin shrinkLabel {
   top: -14px;
   font-size: 12px;
