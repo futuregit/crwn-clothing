@@ -3,7 +3,9 @@ version: '3.8'
 services:
 
   reactapp:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
     volumes:
       - './src:/usr/src/app/src'
     ports:
