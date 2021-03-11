@@ -32,7 +32,7 @@ class App extends Component {
         });
       }
 
-      setCurrentUser{userAuth};
+      setCurrentUser(userAuth);
     });
   }
 
