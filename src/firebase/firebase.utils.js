@@ -8,13 +8,13 @@ import 'firebase/auth';
 // REACT_APP_API is an key value environmental value being read from .env at the root.
 // These Firebase configuration values are okay to be public
 const config = {
-    apiKey: process.env.REACT_APP_API_KEY,
-    authDomain: process.env.REACT_APP_AUTHDOMAIN,
-    projectId: process.env.REACT_APP_PROJECTID,
-    storageBucket: process.env.REACT_APP_STORAGEBUCKET,
-    messagingSenderId: process.env.REACT_APP_MESSAGINGSENDERID,
-    appId: process.env.REACT_APP_ID,
-    measurementId: process.env.REACT_APP_MEASUREMENTID
+    apiKey: 'AIzaSyCFtGFV5O42l55uEcVwcORdqChJ4O_Xmg4',
+    authDomain: 'crwn-db-2cfba.firebaseapp.com',
+    projectId: 'crwn-db-2cfba',
+    storageBucket: 'crwn-db-2cfba.appspot.com',
+    messagingSenderId: '781441015913',
+    appId: '1:781441015913:web:3f09fcf3f5f637e765c2f8',
+    measurementId: 'G-FGVPREMDQH'
   };
 
  
