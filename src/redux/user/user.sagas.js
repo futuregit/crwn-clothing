@@ -108,7 +108,6 @@ export function* onSignOutStart() {
 
 export function* onSignUpStart() {
     yield takeLatest(UserActionTypes.SIGN_UP_START, signUpUser)
-    yield console.log('test')
 };
 
 export function* userSagas() {
