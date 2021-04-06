@@ -6,9 +6,11 @@ import {
     signInSuccess, 
     signInFailure,
     signOutSuccess,
-    signOutFailure
+    signOutFailure,
+    signUpSuccess,
+    signUpFailure
 } from './user.actions';
-
+//
 import { 
     auth, 
     googleProvider, 
@@ -56,6 +58,19 @@ export function* signInWithEmail({payload: { email, password }}) {
     }
 };
 
+export function* signUpUser({payload: {displayName, email, password}}) {
+        try {
+            const { user } = yield  auth.createUserWithEmailAndPassword(
+                email, 
+                password
+            );           
+            const userRef = yield call(createUserProfileDocument, user, {displayName});
+            yield getSnapshotFromUserAuth(user)  
+        } catch(error) {
+            yield put(signUpFailure(error));
+        }
+}
+
 export function* isUserAuthenticated() {
     try {
         const userAuth = yield getCurrentUser();
@@ -91,11 +106,17 @@ export function* onSignOutStart() {
     yield takeLatest(UserActionTypes.SIGN_OUT_START, signOut )
 };
 
+export function* onSignUpStart() {
+    yield takeLatest(UserActionTypes.SIGN_UP_START, signUpUser)
+    yield console.log('test')
+};
+
 export function* userSagas() {
     yield all([
         call(onGoogleSignInStart), 
         call(onEmailSignInStart),
         call(isUserAuthenticated),
-        call(onSignOutStart)
+        call(onSignOutStart),
+        call(onSignUpStart)
     ]);
 };
