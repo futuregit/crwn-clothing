@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
 
-  reactapp:
+  nodeapp:
     build: .
     volumes:
       - './src:/usr/src/app/src'
