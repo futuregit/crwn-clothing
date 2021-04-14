@@ -2,9 +2,18 @@ version: '3.8'
 
 services:
 
-  nodeapp:
-    build: .
+  reactapp:
+    build: client/
     volumes:
-      - './src:/usr/src/app/src'
+      - './client/src:/usr/src/app/src'
+    ports: 
+      - 3001:3000
+    restart: unless-stopped
+    depends_on: 
+      - nodeapp
+
+  nodeapp:
+    build: .    
     ports:
       - 5001:5000
+    
