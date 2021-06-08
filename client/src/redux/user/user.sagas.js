@@ -37,6 +37,7 @@ export function* signInWithGoogle() {
       const {user} = yield auth.signInWithPopup(googleProvider);
       const userRef = yield call(createUserProfileDocument, user);
       const userSnapshot = yield userRef.get();
+      //This is where you can start to get/put cartitems to firestore
       yield put(
           signInSuccess({ id: userSnapshot.id, ...userSnapshot.data() })
         );
@@ -74,6 +75,7 @@ export function* signUpUser({payload: {displayName, email, password}}) {
 export function* isUserAuthenticated() {
     try {
         const userAuth = yield getCurrentUser();
+        console.log({userAuth})
         if (!userAuth) return;
         yield getSnapshotFromUserAuth(userAuth)
     } catch (error) {

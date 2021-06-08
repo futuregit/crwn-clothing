@@ -4,6 +4,8 @@ import 'firebase/firestore';
 //Firebase authentication product
 import 'firebase/auth';
 
+const arrayUnion = firebase.firestore.FieldValue.arrayUnion;
+
 // Firebase project configuration
 // REACT_APP_API is an key value environmental value being read from .env at the root.
 // These Firebase configuration values are okay to be public
@@ -27,7 +29,7 @@ const config = {
     if (!userAuth) return;
     // userRef holds reference to collection called, users, document id
     const userRef = firestore.doc(`users/${userAuth.uid}`);
-  
+    const testRef = { user: userAuth.uid, cartItemArray: [{"Desc": "Red Hat", "Qty": 2}, {"Desc": "Blue Hat", "Qty": 2, "Price": "$5.00"}] }
     const snapShot = await userRef.get();
   
     if (!snapShot.exists) {
@@ -44,9 +46,49 @@ const config = {
         console.log('error creating user', error.message);
       }
     }
-  
-    return userRef;
+    //userRef.set({ user: userAuth.uid, cartItemArray: [{"Desc": "Red Hat", "Qty": 2}, {"Desc": "Blue Hat", "Qty": 2, "Price": "$5.00"}] }, { merge: true })
+    return userRef;//
   };
+
+  export const getUserCartRef = async userId => {
+    // Store document reference, not the data
+    const cartsRef = firestore.collection('carts').where('userId', '==', userId);
+    // Get the cartsRef info and store in snapShot
+    const snapShot = await cartsRef.get();
+    // Since you will get an snapShot object regardless,
+    // you will need to check to make sure it is not empty.
+    if (snapShot.empty) {
+      // Store document reference to collection carts in cartDocRef
+      const cartDocRef = firestore.collection('carts').doc();
+      // Set the document to userID object and cartItems with an empty array value.
+      await cartDocRef.set({ userId, cartItems: [] });
+      return cartDocRef;
+    } else {
+      // Not clear on this but is under assumption that you are returning the document ref.
+      return snapShot.docs[0].ref;
+    }
+  };
+
+  export const getCartItemsFromFirestore = async (userAuth, cartItems) => {
+    const userRef = firestore.doc(`users/${userAuth.uid}`);
+    const snapShot = await userRef.get();
+    console.log("This is snapShot ", snapShot);
+    console.log("This is snapShot data", snapShot.data())
+    userRef.get().then((user) => {
+      if (user.exists) {
+          const {cartItemArray} = user.data();
+          console.log("Document data:", cartItemArray);
+          
+          console.log("Cartitemarray should be holding a value ", cartItemArray)
+        return cartItemArray;
+      } else {
+          // doc.data() will be undefined in this case
+          console.log("No such document!");
+      }
+  }).catch((error) => {
+      console.log("Error getting document:", error);
+  });
+  }
 
   export const addCollectionAndDocuments = async (collectionKey, objectsToAdd) => {
     const collectionRef = firestore.collection(collectionKey);
