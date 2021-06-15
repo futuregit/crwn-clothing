@@ -75,7 +75,6 @@ export function* signUpUser({payload: {displayName, email, password}}) {
 export function* isUserAuthenticated() {
     try {
         const userAuth = yield getCurrentUser();
-        console.log({userAuth})
         if (!userAuth) return;
         yield getSnapshotFromUserAuth(userAuth)
     } catch (error) {
