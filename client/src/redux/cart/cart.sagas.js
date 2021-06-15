@@ -4,13 +4,10 @@ import UserActionTypes from '../user/user.types';
 import CartActionTypes from '../../redux/cart/cart.types';
 import { clearCart, addItem } from './cart.actions';
 import { selectCartItems } from './cart.selectors';
+import { selectCurrentUser } from '../user/user.selectors';
 import { addItemToCart } from './cart.utils';
-import { 
-    getCurrentUser, 
-    storeCartItems, 
-    getCartItemsFromFirestore,
-    getUserCartRef
-} from '../../firebase/firebase.utils';
+
+import {getUserCartRef} from '../../firebase/firebase.utils';
 
 export function* clearCartOnSignOut() {
     yield put(clearCart());
@@ -18,18 +15,10 @@ export function* clearCartOnSignOut() {
 
 export function* addItemToBackend() {
     //Use selectors for below to get current user
-     const testUser = yield getCurrentUser();
-     console.log("This is testUser: ", testUser);
-     const cartData = yield getUserCartRef(testUser.uid);
+     const currentUser = yield select(selectCurrentUser);
+     const cartData = yield getUserCartRef(currentUser.id);
      const cartItems = yield select(selectCartItems)
      yield cartData.update({ cartItems });
-     console.log('This is cartData ', cartData)
-    // console.log("This is items: ", payload)
-    // // const {cartItemArray} = yield getCartItemsFromFirestore(testUser, {payload})
-    // // console.log("This is currentCart ", cartItemArray[0]);
-    // const userRef = yield storeCartItems(testUser, {payload})
-    // console.log("This is userRef 2 ", userRef)
-    // yield put(addItem(payload));
 };
 
 export function* onSignOutSuccess() {
@@ -37,7 +26,11 @@ export function* onSignOutSuccess() {
 };
 
 export function* onAddItem() {
-    yield takeEvery(CartActionTypes.ADD_ITEM, addItemToBackend);
+    yield takeLatest(
+       [ CartActionTypes.ADD_ITEM,
+        CartActionTypes.REMOVE_ITEM,
+        CartActionTypes.CLEAR_ITEM_FROM_CART] , 
+        addItemToBackend);
 };
 
 export function* cartSagas() {

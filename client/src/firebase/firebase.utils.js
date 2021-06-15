@@ -28,8 +28,7 @@ const config = {
     // If user is not authenticated, exit this function.
     if (!userAuth) return;
     // userRef holds reference to collection called, users, document id
-    const userRef = firestore.doc(`users/${userAuth.uid}`);
-    const testRef = { user: userAuth.uid, cartItemArray: [{"Desc": "Red Hat", "Qty": 2}, {"Desc": "Blue Hat", "Qty": 2, "Price": "$5.00"}] }
+    const userRef = firestore.doc(`users/${userAuth.uid}`);    
     const snapShot = await userRef.get();
   
     if (!snapShot.exists) {
@@ -45,8 +44,7 @@ const config = {
       } catch (error) {
         console.log('error creating user', error.message);
       }
-    }
-    //userRef.set({ user: userAuth.uid, cartItemArray: [{"Desc": "Red Hat", "Qty": 2}, {"Desc": "Blue Hat", "Qty": 2, "Price": "$5.00"}] }, { merge: true })
+    }  
     return userRef;//
   };
 
@@ -68,27 +66,6 @@ const config = {
       return snapShot.docs[0].ref;
     }
   };
-
-  export const getCartItemsFromFirestore = async (userAuth, cartItems) => {
-    const userRef = firestore.doc(`users/${userAuth.uid}`);
-    const snapShot = await userRef.get();
-    console.log("This is snapShot ", snapShot);
-    console.log("This is snapShot data", snapShot.data())
-    userRef.get().then((user) => {
-      if (user.exists) {
-          const {cartItemArray} = user.data();
-          console.log("Document data:", cartItemArray);
-          
-          console.log("Cartitemarray should be holding a value ", cartItemArray)
-        return cartItemArray;
-      } else {
-          // doc.data() will be undefined in this case
-          console.log("No such document!");
-      }
-  }).catch((error) => {
-      console.log("Error getting document:", error);
-  });
-  }
 
   export const addCollectionAndDocuments = async (collectionKey, objectsToAdd) => {
     const collectionRef = firestore.collection(collectionKey);
