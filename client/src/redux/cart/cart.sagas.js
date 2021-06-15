@@ -29,17 +29,12 @@ export function* addAndRemoveItemToBackend() {
 };
 
 export function* getCartFromFirestore({payload: user}) {
-    const cartItems = yield select(selectCartItems);
-    console.log(cartItems)
-    console.log(user.createdAt)
-    // if (cartItems <= 0) {
-    //     return addAndRemoveItemToBackend();
-    // }
-    console.log("Went pass if statement")
+    const existingCartItems = yield select(selectCartItems);   
     const cartRef = yield getUserCartRef(user.id);
     const cartSnapshot = yield cartRef.get();
-    console.log(cartSnapshot.data().cartItems)
-    if (cartSnapshot.data().cartItems.length <= 0 && cartItems.length > 0 ) {
+    // If firestore cartItems is empty and the app cartitems is not then
+    // it is assumed that a new user signed up
+    if (cartSnapshot.data().cartItems.length <= 0 && existingCartItems.length > 0 ) {
         return addAndRemoveItemToBackend();
     }
     yield put(setCartFromFirebase(cartSnapshot.data().cartItems));
@@ -52,10 +47,6 @@ export function* onSignOutSuccess() {
 export function* onSignInSuccess() {
     yield takeLatest(UserActionTypes.SIGN_IN_SUCCESS, getCartFromFirestore);
 };
-
-// export function* onSignUpSuccess() {
-//     yield takeLatest(UserActionTypes.SIGN_UP_SUCCESS, saveCartToFirestore)
-// }
 
 export function* onAddItem() {
     yield takeLatest(
